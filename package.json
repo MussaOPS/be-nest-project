@@ -1,8 +1,8 @@
 {
   "name": "be-nest-education",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "nest project",
+  "author": "best people",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

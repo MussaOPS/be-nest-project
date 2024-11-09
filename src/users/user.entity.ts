@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryGeneratedColumn} from "typeorm";
+import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn} from "typeorm";
 import {ApiProperty} from "@nestjs/swagger";
 import {UsersRole} from "../enums/user.role.enum";
 
@@ -51,10 +51,10 @@ export class User {
     role: UsersRole;
 
     @ApiProperty({example: "2021-06-01T00:00:00.000Z", description: "Дата создания пользователя"})
-    @Column()
+    @CreateDateColumn()
     created: Date;
 
     @ApiProperty({example: "2021-06-01T00:00:00.000Z", description: "Дата обновления пользователя"})
-    @Column()
+    @UpdateDateColumn()
     updated: Date;
 }

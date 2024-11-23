@@ -1,5 +1,5 @@
 import {Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common';
-import {Repository} from 'typeorm';
+import {DataSource, Repository} from 'typeorm';
 import {InjectRepository} from '@nestjs/typeorm';
 import {JwtService} from '@nestjs/jwt';
 import {IUsersService} from "../users.interface";
@@ -7,27 +7,53 @@ import {User} from "../../entity/user.entity";
 import {UserSignUpRequestDto} from "../../dto/user-sign-up-request.dto";
 import {UserSignInRequestDto} from "../../dto/user-sign-in-request.dto";
 import {PasswordUtil} from "../../util/password.util";
+import {UserAdditionalInfoEntity} from "../../entity/user-additional-info.entity";
+import {UserAdditionalInfoModel} from "../../model/user-additional-info.model";
+import {JsonUtil} from "../../util/json.util";
 
 @Injectable()
 export class UsersService implements IUsersService {
 
     constructor(
+        private readonly dataSource: DataSource,
         @InjectRepository(User)
         private readonly usersRepository: Repository<User>,
+        @InjectRepository(UserAdditionalInfoEntity)
+        private readonly userAdditionalInfoRepository: Repository<UserAdditionalInfoEntity>,
         private readonly jwtService: JwtService,
     ) {
     }
 
     async signUp(createUserDto: UserSignUpRequestDto): Promise<User> {
 
-        const hashedPassword = await PasswordUtil.hashPassword(createUserDto.password);
+        return await this.dataSource.transaction(async (manager) => {
+            // Создаем дополнительную информацию
+            const userAdditionalInfo = new UserAdditionalInfoModel(createUserDto.avatar, createUserDto.address);
+            const userAdditionalInfoJsonString = JsonUtil.stringify<UserAdditionalInfoModel>(userAdditionalInfo);
 
-        const user = this.usersRepository.create({
-            ...createUserDto,
-            password: hashedPassword,
+            // Создаем и сохраняем UserAdditionalInfoEntity
+            const userAdditionalInfoEntity = manager.create(UserAdditionalInfoEntity, {
+                data: userAdditionalInfoJsonString,
+            });
+            const savedUserAdditionalInfoEntity = await manager.save<UserAdditionalInfoEntity>(userAdditionalInfoEntity);
+
+            // Хэшируем пароль
+            const hashedPassword = await PasswordUtil.hashPassword(createUserDto.password);
+
+            // Создаем и сохраняем пользователя
+            const user = manager.create(User, {
+                username: createUserDto.username,
+                email: createUserDto.email,
+                firstName: createUserDto.firstName,
+                lastName: createUserDto.lastName,
+                phone: createUserDto.phone,
+                role: createUserDto.role,
+                userAdditionalInfoId: savedUserAdditionalInfoEntity.id,
+                password: hashedPassword,
+            });
+
+            return manager.save(User, user);
         });
-
-        return this.usersRepository.save(user);
     }
 
     async signIn(loginUserDto: UserSignInRequestDto): Promise<string> {

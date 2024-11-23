@@ -7,10 +7,11 @@ import {jwtConstants} from "../constant/app.constants";
 import {UsersService} from "../service/impl/users.service";
 import {JwtStrategy} from "../util/jwt.strategy";
 import {UsersController} from "../api/users.controller";
+import {UserAdditionalInfoEntity} from "../entity/user-additional-info.entity";
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([User]),
+        TypeOrmModule.forFeature([User, UserAdditionalInfoEntity]),
         PassportModule,
         JwtModule.register({
             secret: jwtConstants.secret,

@@ -33,11 +33,8 @@ export class User {
     @Column({unique: true})
     phone: string;
 
-    @Column({nullable: true})
-    avatar: string;
-
-    @Column({nullable: true})
-    address: string;
+    @Column()
+    userAdditionalInfoId: number;
 
     @Column({
         type: 'enum',

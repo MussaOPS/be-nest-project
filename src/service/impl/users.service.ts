@@ -27,20 +27,16 @@ export class UsersService implements IUsersService {
     async signUp(createUserDto: UserSignUpRequestDto): Promise<User> {
 
         return await this.dataSource.transaction(async (manager) => {
-            // Создаем дополнительную информацию
             const userAdditionalInfo = new UserAdditionalInfoModel(createUserDto.avatar, createUserDto.address);
             const userAdditionalInfoJsonString = JsonUtil.stringify<UserAdditionalInfoModel>(userAdditionalInfo);
 
-            // Создаем и сохраняем UserAdditionalInfoEntity
             const userAdditionalInfoEntity = manager.create(UserAdditionalInfoEntity, {
                 data: userAdditionalInfoJsonString,
             });
             const savedUserAdditionalInfoEntity = await manager.save<UserAdditionalInfoEntity>(userAdditionalInfoEntity);
 
-            // Хэшируем пароль
             const hashedPassword = await PasswordUtil.hashPassword(createUserDto.password);
 
-            // Создаем и сохраняем пользователя
             const user = manager.create(User, {
                 username: createUserDto.username,
                 email: createUserDto.email,

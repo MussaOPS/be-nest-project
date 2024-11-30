@@ -4,7 +4,7 @@ import {JwtModule} from '@nestjs/jwt';
 import {PassportModule} from '@nestjs/passport';
 import {User} from "../entity/user.entity";
 import {jwtConstants} from "../constant/app.constants";
-import {UsersService} from "../service/impl/users.service";
+import {DefaultUsersService} from "../service/impl/default-users.service";
 import {JwtStrategy} from "../util/jwt.strategy";
 import {UsersController} from "../api/users.controller";
 import {UserAdditionalInfoEntity} from "../entity/user-additional-info.entity";
@@ -21,9 +21,9 @@ import {UserAdditionalInfoEntity} from "../entity/user-additional-info.entity";
     providers: [
         {
             provide: 'IUsersService',
-            useClass: UsersService,
+            useClass: DefaultUsersService,
         },
-        UsersService,
+        DefaultUsersService,
         JwtStrategy,
     ],
     controllers: [UsersController],

@@ -1,30 +1,23 @@
-import {
-    Controller,
-    Post,
-    Body,
-    Get,
-    Delete,
-    UseGuards,
-    Req,
-} from '@nestjs/common';
-import {ApiTags, ApiOperation, ApiResponse, ApiBearerAuth} from '@nestjs/swagger';
-import {AuthGuard} from '@nestjs/passport';
+import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {Body, Controller, Delete, Get, Post, Req, UseGuards} from "@nestjs/common";
 import {DefaultUsersService} from "../service/impl/default-users.service";
-import {User} from "../entity/user.entity";
 import {UserSignUpRequestDto} from "../dto/user-sign-up-request.dto";
+import {User} from "../entity/user.entity";
 import {UserSignInRequestDto} from "../dto/user-sign-in-request.dto";
+import {AuthGuard} from "@nestjs/passport";
+import {DefaultProductsService} from "../service/impl/default-products.service";
 
-@ApiTags('Users')
-@Controller('users')
-export class UsersController {
-    constructor(private readonly usersService: DefaultUsersService) {
+@ApiTags('Products')
+@Controller('products')
+export class ProductsController {
+    constructor(private readonly productsService: DefaultProductsService) {
     }
 
-    @Post('sign-up')
-    @ApiOperation({summary: 'User registration'})
-    @ApiResponse({status: 201, description: 'User successfully registered.'})
-    signUp(@Body() createUserDto: UserSignUpRequestDto): Promise<User> {
-        return this.usersService.signUp(createUserDto);
+    @Post('create')
+    @ApiOperation({summary: 'Product creation'})
+    @ApiResponse({status: 201, description: 'Product successfully created.'})
+    signUp(@Body() request: ProductCreateRequestDto): Promise<void> {
+        return this.productsService.createProduct(request);
     }
 
     @Post('sign-in')

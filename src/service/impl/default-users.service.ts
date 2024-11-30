@@ -2,7 +2,7 @@ import {Injectable, NotFoundException, UnauthorizedException} from '@nestjs/comm
 import {DataSource, Repository} from 'typeorm';
 import {InjectRepository} from '@nestjs/typeorm';
 import {JwtService} from '@nestjs/jwt';
-import {IUsersService} from "../users.interface";
+import {UsersService} from "../users.interface";
 import {User} from "../../entity/user.entity";
 import {UserSignUpRequestDto} from "../../dto/user-sign-up-request.dto";
 import {UserSignInRequestDto} from "../../dto/user-sign-in-request.dto";
@@ -12,7 +12,7 @@ import {UserAdditionalInfoModel} from "../../model/user-additional-info.model";
 import {JsonUtil} from "../../util/json.util";
 
 @Injectable()
-export class UsersService implements IUsersService {
+export class DefaultUsersService implements UsersService {
 
     constructor(
         private readonly dataSource: DataSource,

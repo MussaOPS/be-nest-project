@@ -2,7 +2,7 @@ import {User} from "../entity/user.entity";
 import {UserSignUpRequestDto} from "../dto/user-sign-up-request.dto";
 import {UserSignInRequestDto} from "../dto/user-sign-in-request.dto";
 
-export interface IUsersService {
+export interface UsersService {
 
     signUp(createUserDto: UserSignUpRequestDto): Promise<User>;
 

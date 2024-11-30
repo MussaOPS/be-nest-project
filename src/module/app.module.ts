@@ -1,14 +1,12 @@
 import {Module} from "@nestjs/common";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {AppDataSource} from "../../data-source";
-import {MongooseModule} from "@nestjs/mongoose";
+import {UsersModule} from "./user.module";
 
 @Module({
     imports: [
-        // UsersModule,
-        OrderModule,
-        TypeOrmModule.forRoot(AppDataSource.options),
-        MongooseModule.forRoot('mongodb://localhost/nest'),
+        UsersModule,
+        TypeOrmModule.forRoot(AppDataSource.options)
     ],
 })
 

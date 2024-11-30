@@ -1,7 +1,5 @@
 import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Body, Controller, Delete, Get, Post, Req, UseGuards} from "@nestjs/common";
-import {DefaultUsersService} from "../service/impl/default-users.service";
-import {UserSignUpRequestDto} from "../dto/user-sign-up-request.dto";
 import {User} from "../entity/user.entity";
 import {UserSignInRequestDto} from "../dto/user-sign-in-request.dto";
 import {AuthGuard} from "@nestjs/passport";

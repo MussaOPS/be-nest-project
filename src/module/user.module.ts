@@ -20,7 +20,7 @@ import {UserAdditionalInfoEntity} from "../entity/user-additional-info.entity";
     ],
     providers: [
         {
-            provide: 'IUsersService',
+            provide: 'UsersService',
             useClass: DefaultUsersService,
         },
         DefaultUsersService,

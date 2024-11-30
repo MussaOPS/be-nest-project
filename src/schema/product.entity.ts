@@ -15,6 +15,9 @@ export class Product {
     description: string;
 
     @Prop({required: true})
+    image: string;
+
+    @Prop({required: true})
     price: number;
 
     @Prop()

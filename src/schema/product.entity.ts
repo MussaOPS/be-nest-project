@@ -5,6 +5,7 @@ export type ProductDocument = Product & Document;
 
 @Schema()
 export class Product {
+
     @Prop({required: true, unique: true})
     id: number;
 
@@ -31,6 +32,9 @@ export class Product {
 
     @Prop()
     brand: string;
+
+    @Prop()
+    isDeleted: boolean;
 
     @Prop({default: Date.now})
     created: Date;

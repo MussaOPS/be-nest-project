@@ -4,12 +4,12 @@ import {Document} from 'mongoose';
 export type ProductDocument = Product & Document;
 
 @Schema()
-export class Product {
+export class Product extends Document {
 
     @Prop({required: true, unique: true})
     id: number;
 
-    @Prop({required: true})
+    @Prop({required: true, unique: true})
     name: string;
 
     @Prop()

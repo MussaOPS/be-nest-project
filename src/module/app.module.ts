@@ -1,15 +1,24 @@
 import {Module} from "@nestjs/common";
 import {TypeOrmModule} from "@nestjs/typeorm";
-import {AppDataSource} from "../../data-source";
 import {UsersModule} from "./user.module";
-import {ProductModule} from "./product.module";
+import {ProductsModule} from "./product.module";
+import {MongooseModule} from "@nestjs/mongoose";
 
 @Module({
     imports: [
+        TypeOrmModule.forRoot({
+            type: 'postgres',
+            host: 'localhost',
+            port: 5432,
+            username: 'postgres',
+            password: 'pwd',
+            database: 'be_nest_education',
+            autoLoadEntities: true,
+            synchronize: true,
+        }),
+        MongooseModule.forRoot('mongodb://localhost:27017/be_nest_education'),
         UsersModule,
-        ProductModule,
-        TypeOrmModule.forRoot(AppDataSource.options)
-        //todo add mongoose
+        ProductsModule,
     ],
 })
 

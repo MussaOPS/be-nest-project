@@ -1,4 +1,5 @@
 import {IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString} from 'class-validator';
+import {UsersRole} from "../entity/user.entity";
 
 export class UserSignUpRequestDto {
 
@@ -33,7 +34,7 @@ export class UserSignUpRequestDto {
     @IsString()
     address?: string;
 
-    // @IsOptional()
-    // @IsEnum(UsersRole)
-    // role?: UsersRole;
+    @IsOptional()
+    @IsEnum(UsersRole)
+    role?: UsersRole;
 }

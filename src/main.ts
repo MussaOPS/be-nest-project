@@ -1,6 +1,7 @@
 import {NestFactory} from "@nestjs/core";
 import {AppModule} from "./module/app.module";
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
+import {CustomExceptionHandler} from "./errors/filter/custom-exception.handler";
 
 async function bootstrap() {
 
@@ -14,6 +15,7 @@ async function bootstrap() {
         .build();
 
     const document = SwaggerModule.createDocument(app, config);
+    app.useGlobalFilters(new CustomExceptionHandler());
     SwaggerModule.setup("/swagger-ui/index.html", app, document);
 
     await app.listen(3000);

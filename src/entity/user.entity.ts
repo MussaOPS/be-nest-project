@@ -31,8 +31,11 @@ export class User {
     @Column({unique: true})
     phone: string;
 
-    @Column()
-    userAdditionalInfoId: number;
+    @Column({
+        type: 'jsonb',
+        nullable: true,
+    })
+    userAdditionalInfo: Record<String, Object>;
 
     @Column({
         type: 'enum',

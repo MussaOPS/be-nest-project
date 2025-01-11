@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 
-export class PasswordUtil {
+export class PasswordUtils {
 
     static async hashPassword(password: string): Promise<string> {
 

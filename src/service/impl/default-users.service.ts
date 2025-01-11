@@ -1,13 +1,10 @@
 import {Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common';
-import {DataSource, QueryFailedError, Repository} from 'typeorm';
+import {DataSource, Repository} from 'typeorm';
 import {InjectRepository} from '@nestjs/typeorm';
 import {JwtService} from '@nestjs/jwt';
 import {UsersService} from "../users.interface";
 import {User} from "../../entity/user.entity";
-import {PasswordUtil} from "../../util/password.util";
-import {JwtResponseDto} from "../../dto/jwt-response.dto";
-import {CommonBusinessException} from "../../errors/exception/common.business-exception";
-import {CommonValidationException} from "../../errors/exception/common.validation-exception";
+import {PasswordUtils} from "../../utils/password.utils";
 
 @Injectable()
 export class DefaultUsersService implements UsersService {
@@ -20,66 +17,41 @@ export class DefaultUsersService implements UsersService {
     ) {
     }
 
-    async signUp(user: User, password: string): Promise<User> {
+    async signUp(user: User, password: string): Promise<void> {
 
         try {
-            user.password = await PasswordUtil.hashPassword(password);
+            user.password = await PasswordUtils.hashPassword(password);
 
-            return this.usersRepository.create(user);
+            this.usersRepository.create(user);
         } catch (e) {
-            if (e instanceof QueryFailedError) {
-                const errorMessage = e.driverError?.message || '';
-
-                if (errorMessage.includes('null value in column')) {
-                    throw new CommonValidationException('VALIDATION_ERROR','Required fields are missing');
-                }
-                if (errorMessage.includes('duplicate key value violates unique constraint')) {
-                    throw new CommonBusinessException('USER_ALREADY_EXITS','User already exists');
-                }
-            }
-
-            // Неизвестные ошибки
             throw new Error('An unexpected error occurred');
         }
     }
 
-    async signIn(login: string, password: string): Promise<JwtResponseDto> {
-
-        //todo: по regex определить логин или email
-
-        //todo подумать
-
-        const {usernameOrEmail, password} = loginUserDto;
+    async signIn(username: string, password: string): Promise<void> {
 
         const user = await this.usersRepository.findOne({
-            where: [{username: usernameOrEmail}, {email: usernameOrEmail}],
+            where: [{username: username}],
         });
 
-        if (!user || !(await PasswordUtil.comparePassword(password, user.password))) {
+        if (!user || !(await PasswordUtils.comparePassword(password, user.password))) {
             throw new UnauthorizedException('Invalid credentials');
         }
 
-        return this.jwtService.sign({userId: user.id});
+        this.jwtService.sign({userId: user.id});
     }
 
     async updateUser(user: User): Promise<void> {
 
     }
 
-    async getProfile(username: string): Promise<User> {
+    async getProfile(username: string): Promise<void> {
 
         const user = await this.usersRepository.findOneBy({username: username});
 
         if (!user) {
             throw new NotFoundException('User not found');
         }
-
-        return user;
-    }
-
-    async deleteUser(username: string): Promise<void> {
-
-        await this.usersRepository.delete({username: username});
     }
 
     async resetUsersPassword() {

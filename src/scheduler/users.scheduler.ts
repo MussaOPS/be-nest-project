@@ -4,6 +4,7 @@ import {DefaultUsersService} from "../service/impl/default-users.service";
 
 @Injectable()
 export class UsersScheduler {
+
     private readonly logger = new Logger(UsersScheduler.name);
 
     constructor(private readonly usersService: DefaultUsersService) {

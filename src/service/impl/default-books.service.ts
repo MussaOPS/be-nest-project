@@ -3,6 +3,7 @@ import {BooksService} from "../books.service";
 import {DataSource, Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Books} from "../../entity/books.entity";
+import {CreateBookRequestDto} from "../../dto/create-book-request.dto";
 
 @Injectable()
 export class DefaultBooksService implements BooksService {
@@ -14,12 +15,16 @@ export class DefaultBooksService implements BooksService {
     ) {
     }
 
-    async createBook(book: any): Promise<void> {
-        return undefined;
+    async createBook(book: CreateBookRequestDto): Promise<Books> {
+
+        const newBook = this.booksRepository.create(book);
+
+        return this.booksRepository.save(newBook);
     }
 
-    async getBooks(): Promise<void> {
-        return undefined;
+    async getBooks(): Promise<Books[]> {
+
+        return this.booksRepository.find();
     }
 
     async getBookById(bookId: string): Promise<void> {

@@ -1,8 +1,10 @@
+import {Books} from "../entity/books.entity";
+
 export interface BooksService {
 
-    createBook(book: any): Promise<void>;
+    createBook(book: any): Promise<Books>;
 
-    getBooks(): Promise<void>;
+    getBooks(): Promise<Books[]>;
 
     getBookById(bookId: string): Promise<void>;
 

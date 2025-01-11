@@ -18,7 +18,9 @@ async function bootstrap() {
     app.useGlobalFilters(new CustomExceptionHandler());
     SwaggerModule.setup("/swagger-ui/index.html", app, document);
 
-    await app.listen(3000);
+    await app.listen(3000).then(() => {
+        console.log("Server is running on http://localhost:3000");
+    });
 }
 
 bootstrap();

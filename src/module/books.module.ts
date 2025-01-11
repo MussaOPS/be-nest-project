@@ -2,7 +2,7 @@ import {Module} from "@nestjs/common";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {Books} from "../entity/books.entity";
 import {DefaultBooksService} from "../service/impl/default-books.service";
-import {BooksController} from "../api/books.controller";
+import {BooksResolver} from "../resolvers/books.resolvers";
 
 @Module({
     imports: [
@@ -14,8 +14,8 @@ import {BooksController} from "../api/books.controller";
             useClass: DefaultBooksService,
         },
         DefaultBooksService,
+        BooksResolver
     ],
-    controllers: [BooksController],
 })
 
 export class BooksModule {

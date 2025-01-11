@@ -2,7 +2,7 @@ import {Injectable, NotFoundException, UnauthorizedException} from '@nestjs/comm
 import {DataSource, Repository} from 'typeorm';
 import {InjectRepository} from '@nestjs/typeorm';
 import {JwtService} from '@nestjs/jwt';
-import {UsersService} from "../users.interface";
+import {UsersService} from "../users.service";
 import {User} from "../../entity/user.entity";
 import {PasswordUtils} from "../../utils/password.utils";
 

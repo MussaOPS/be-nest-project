@@ -1,10 +1,7 @@
 import {Module} from "@nestjs/common";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {UsersModule} from "./user.module";
-import {ProductsModule} from "./product.module";
-import {MongooseModule} from "@nestjs/mongoose";
-import {LocaleConfig} from "../locale/config/locale-config";
-import {MessageService} from "../locale/service/message.service";
+import {BooksModule} from "./books.module";
 
 @Module({
     imports: [
@@ -14,17 +11,13 @@ import {MessageService} from "../locale/service/message.service";
             port: 5432,
             username: 'postgres',
             password: 'pwd',
-            database: 'be_nest_education',
+            database: 'library',
             autoLoadEntities: true,
             synchronize: true,
         }),
-        MongooseModule.forRoot('mongodb://localhost:27017/be_nest_education'),
         UsersModule,
-        ProductsModule,
-        LocaleConfig
+        BooksModule,
     ],
-    providers: [MessageService],
-    exports: [MessageService],
 })
 
 export class AppModule {

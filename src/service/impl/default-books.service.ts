@@ -1,10 +1,17 @@
 import {Injectable} from "@nestjs/common";
 import {BooksService} from "../books.service";
+import {DataSource, Repository} from "typeorm";
+import {InjectRepository} from "@nestjs/typeorm";
+import {Books} from "../../entity/books.entity";
 
 @Injectable()
 export class DefaultBooksService implements BooksService {
 
-    constructor(private readonly booksService: BooksService) {
+    constructor(
+        private readonly dataSource: DataSource,
+        @InjectRepository(Books)
+        private readonly booksRepository: Repository<Books>,
+    ) {
     }
 
     async createBook(book: any): Promise<void> {

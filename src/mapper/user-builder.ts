@@ -1,6 +1,5 @@
 import {User} from "../entity/user.entity";
 import {UserSignUpRequestDto} from "../dto/user-sign-up-request.dto";
-import {UserUpdateRequestDto} from "../dto/user-update-request.dto";
 
 export class UserBuilder {
 
@@ -10,6 +9,6 @@ export class UserBuilder {
     public static buildEntity(request: UserSignUpRequestDto): void {
     }
 
-    public static updateEntity(request: UserUpdateRequestDto): void {
+    public static updateEntity(request: string): void {
     }
 }

@@ -1,7 +1,6 @@
 import {Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common';
 import {DataSource, Repository} from 'typeorm';
 import {InjectRepository} from '@nestjs/typeorm';
-import {JwtService} from '@nestjs/jwt';
 import {UsersService} from "../users.service";
 import {User} from "../../entity/user.entity";
 import {PasswordUtils} from "../../utils/password.utils";
@@ -10,7 +9,6 @@ import {PasswordUtils} from "../../utils/password.utils";
 export class DefaultUsersService implements UsersService {
 
     constructor(
-        private readonly jwtService: JwtService,
         private readonly dataSource: DataSource,
         @InjectRepository(User)
         private readonly usersRepository: Repository<User>,
@@ -37,8 +35,6 @@ export class DefaultUsersService implements UsersService {
         if (!user || !(await PasswordUtils.comparePassword(password, user.password))) {
             throw new UnauthorizedException('Invalid credentials');
         }
-
-        this.jwtService.sign({userId: user.id});
     }
 
     async updateUser(user: User): Promise<void> {

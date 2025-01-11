@@ -4,7 +4,6 @@ import {DefaultUsersService} from "../service/impl/default-users.service";
 import {UserSignUpRequestDto} from "../dto/user-sign-up-request.dto";
 import {UserSignInRequestDto} from "../dto/user-sign-in-request.dto";
 import {UserBuilder} from "../mapper/user-builder";
-import {UserUpdateRequestDto} from "../dto/user-update-request.dto";
 import {User} from "../entity/user.entity";
 
 @ApiTags('Users')
@@ -43,7 +42,7 @@ export class UsersController {
     @Put('update')
     @ApiOperation({summary: 'Update user'})
     @ApiResponse({status: 200, description: 'User updated successfully.'})
-    async updateUser(@Body() request: UserUpdateRequestDto): Promise<void> {
+    async updateUser(@Body() request: String): Promise<void> {
 
         await this.usersService.updateUser(new User());
     }
